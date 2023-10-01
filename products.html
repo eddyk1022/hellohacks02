@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Read Products</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        #filterDiv {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+	<div class="sidebar">
+    <a class="Listings" href="/products.html">Listings</a>
+    <a class="Messages" href="/mymessages.html">Messages</a>
+    <a class="Notifications" href="/">Notifications</a>
+		 <style>
+    .sidebar {
+      background-color: lightgrey;
+      border: 2px solid darkgrey;
+      width: 300px;
+      position: fixed;
+      bottom: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .sidebar a {
+      text-decoration: none;
+      color: black;
+    }
+  </style>
+  </div>
+    <a class="button" id="homepageBtn" href="/">Return to homepage</a><br>
+	<a class="button" id="productmakerPageBtn" href="/productmaker.html">Make a new product</a>
+  <script src="script.js"></script><br>
+	<a class="button" id="homepageBtn" href="/samplewatch.html">SAMPLE PRODUCT "rolex watch"</a><br>
+    <label for="searchName">Search by Name: </label>
+    <input type="text" id="searchName">
+    <button id="applyNameFilter">Search</button>
+    <button id="toggleFilter">Toggle Filter</button>
+    <div id="filterDiv">
+        <label for="minPrice">Min Price: </label>
+        <input type="number" id="minPrice">
+        <label for="maxPrice">Max Price: </label>
+        <input type="number" id="maxPrice">
+        <button id="applyFilter">Apply Filter</button>
+    </div>
+    <h1>Products</h1>
+    <table id="productTable">
+        <thead>
+            <tr>
+                <th>productID</th>
+                <th>name</th>
+                <th>price</th>
+                <th>SellerID</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+        </tbody>
+    </table>
+
+    <script>
+        document.getElementById('toggleFilter').addEventListener('click', () => {
+            const filterDiv = document.getElementById('filterDiv');
+            filterDiv.style.display = filterDiv.style.display === 'none' ? 'block' : 'none';
+					filterDiv.style.display = filterDiv.style.display === 'block' ? 'none' : 'block';
+        });
+
+        document.getElementById('applyFilter').addEventListener('click', () => {
+            const minPrice = parseFloat(document.getElementById('minPrice').value);
+            const maxPrice = parseFloat(document.getElementById('maxPrice').value);
+            filterTable(minPrice, maxPrice);
+        });
+
+        document.getElementById('applyNameFilter').addEventListener('click', () => {
+            const searchName = document.getElementById('searchName').value.toLowerCase();
+            filterByName(searchName);
+        });
+
+        const filterTable = (minPrice, maxPrice) => {
+            const rows = document.querySelectorAll('#tableBody tr');
+            rows.forEach(row => {
+                const price = parseFloat(row.cells[2].textContent);
+                row.style.display = (price >= minPrice && price <= maxPrice) ? '' : 'none';
+            });
+        };
+
+        const filterByName = (searchName) => {
+            const rows = document.querySelectorAll('#tableBody tr');
+            rows.forEach(row => {
+                const name = row.cells[1].textContent.toLowerCase();
+                row.style.display = name.includes(searchName) ? '' : 'none';
+            });
+        };
+
+       fetch('products.csv')
+    .then(response => response.text())
+    .then(data => {
+        const lines = data.split('\n');
+        const tableBody = document.getElementById('tableBody');
+        tableBody.innerHTML = '';
+        for (let i = 1; i < lines.length; i++) {
+            const row = document.createElement('tr');
+            const cells = lines[i].split(',');
+            for (let j = 0; j < cells.length; j++) {
+                const cell = document.createElement('td');
+                
+                if (j === 1) {
+                    // Create an anchor around the name
+                    const a = document.createElement('a');
+                    a.textContent = cells[j];
+                    a.href = `/products.html/${cells[0]}`;
+                    cell.appendChild(a);
+                } else {
+                    cell.textContent = cells[j];
+                }
+
+                row.appendChild(cell);
+            }
+            tableBody.appendChild(row);
+        }
+    })
+    .catch(error => console.error(error));
+    </script>
+</body>
+</html>

@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Create New Product</title>
 </head>
+
 <body>
+  <a class="button" id="homepageBtn" href="/">Return to homepage</a><br>
   <h1>Create New Product</h1>
   <form id="product-form">
     <label for="productID">Product ID:</label>
@@ -15,41 +18,57 @@
     <label for="price">Price:</label>
     <input type="number" id="price" name="price"><br>
 
-    <label for="desc">Description:</label>
-    <input type="text" id="desc" name="desc"><br>
-
-    <label for="location">Location:</label>
-    <input type="text" id="location" name="location"><br>
-
-    <label for="sellerName">SellerID</label>
-    <input type="text" id="location" name="SellerID"><br>
+    <label for="sellerID">SellerID</label>
+    <input type="text" id="location" name="sellerID"><br>
 
     <input type="submit" value="Submit">
   </form>
 
   <script>
-document.getElementById("product-form").addEventListener("submit", function(event) {
-  event.preventDefault();
+    document.getElementById("product-form").addEventListener("submit", function (event) {
+      event.preventDefault();
 
-  const productData = {
-    productID: document.getElementById("productID").value,
-    name: document.getElementById("name").value,
-    price: document.getElementById("price").value,
-    desc: document.getElementById("desc").value,
-    location: document.getElementById("location").value,
-    sellerName: document.getElementById("SellerID").value
-  };
+      const productData = {
+        productID: document.getElementById("productID").value,
+        name: 
+document.getElementById("name").value,
+        price: document.getElementById("price").value,
+        sellerID: document.getElementById("sellerID").value
+      };
 
-  fetch('https://expresstest01.edwardkim1.repl.co/products', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(productData)
-  })
-  .then(response => response.json())
-  .then(data => alert('Product created successfully'))
-  .catch(error => alert('Error: ' + error));
-});  </script>
+      fetch('https://hellohack2.edwardkim1.repl.co/productmaker.html', {
+
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(productData)
+      })
+        .then(response => response.json())
+        .then(data => alert('Product created successfully'))
+        .catch(error => alert('Error: ' + error));
+    });  </script>
+	<div class="sidebar">
+    <a class="Listings" href="/products.html">Listings</a>
+    <a class="Messages" href="/mymessages.html">Messages</a>
+    <a class="Notifications" href="/">Notifications</a>
+		 <style>
+    .sidebar {
+      background-color: lightgrey;
+      border: 2px solid darkgrey;
+      width: 300px;
+      position: fixed;
+      bottom: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .sidebar a {
+      text-decoration: none;
+      color: black;
+    }
+  </style>
+  </div>
 </body>
+
 </html>
