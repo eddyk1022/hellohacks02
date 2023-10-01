@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Create New Product</title>
+</head>
+<body>
+  <h1>Create New Product</h1>
+  <form id="product-form">
+    <label for="productID">Product ID:</label>
+    <input type="number" id="productID" name="productID"><br>
+
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name"><br>
+
+    <label for="price">Price:</label>
+    <input type="number" id="price" name="price"><br>
+
+    <label for="desc">Description:</label>
+    <input type="text" id="desc" name="desc"><br>
+
+    <label for="location">Location:</label>
+    <input type="text" id="location" name="location"><br>
+
+    <label for="sellerName">SellerID</label>
+    <input type="text" id="location" name="SellerID"><br>
+
+    <input type="submit" value="Submit">
+  </form>
+
+  <script>
+document.getElementById("product-form").addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  const productData = {
+    productID: document.getElementById("productID").value,
+    name: document.getElementById("name").value,
+    price: document.getElementById("price").value,
+    desc: document.getElementById("desc").value,
+    location: document.getElementById("location").value,
+    sellerName: document.getElementById("SellerID").value
+  };
+
+  fetch('https://expresstest01.edwardkim1.repl.co/products', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(productData)
+  })
+  .then(response => response.json())
+  .then(data => alert('Product created successfully'))
+  .catch(error => alert('Error: ' + error));
+});  </script>
+</body>
+</html>
